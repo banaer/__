@@ -24,5 +24,3 @@ var fooPromise = new FooPromise().then(d=>{
 }).then(m=>{
     console.log('m',m)
 });
-
-console.log(fooPromise instanceof FooPromise)
