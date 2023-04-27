@@ -1,0 +1,104 @@
+
+state 0
+	$accept: .main $end 
+
+	NUM  shift 5
+	.  error
+
+	expr  goto 2
+	n  goto 4
+	expr1  goto 3
+	main  goto 1
+
+state 1
+	$accept:  main.$end 
+
+	$end  accept
+	.  error
+
+
+state 2
+	main:  expr.    (1)
+
+	.  reduce 1 (src line 24)
+
+
+state 3
+	expr:  expr1.op expr1 
+	expr1:  expr1.SPACE 
+
+	OPT  shift 8
+	SPACE  shift 7
+	.  error
+
+	op  goto 6
+
+state 4
+	expr1:  n.    (6)
+	n:  n.NUM 
+
+	NUM  shift 9
+	.  reduce 6 (src line 62)
+
+
+state 5
+	n:  NUM.    (7)
+
+	.  reduce 7 (src line 66)
+
+
+state 6
+	expr:  expr1 op.expr1 
+	op:  op.SPACE 
+
+	NUM  shift 5
+	SPACE  shift 11
+	.  error
+
+	n  goto 4
+	expr1  goto 10
+
+state 7
+	expr1:  expr1 SPACE.    (5)
+
+	.  reduce 5 (src line 57)
+
+
+state 8
+	op:  OPT.    (3)
+
+	.  reduce 3 (src line 48)
+
+
+state 9
+	n:  n NUM.    (8)
+
+	.  reduce 8 (src line 71)
+
+
+state 10
+	expr:  expr1 op expr1.    (2)
+	expr1:  expr1.SPACE 
+
+	SPACE  shift 7
+	.  reduce 2 (src line 28)
+
+
+state 11
+	op:  op SPACE.    (4)
+
+	.  reduce 4 (src line 53)
+
+
+6 terminals, 6 nonterminals
+9 grammar rules, 12/16000 states
+0 shift/reduce, 0 reduce/reduce conflicts reported
+55 working sets used
+memory: parser 6/240000
+4 extra closures
+7 shift entries, 1 exceptions
+6 goto entries
+1 entries saved by goto default
+Optimizer space used: output 13/240000
+13 table entries, 0 zero
+maximum spread: 6, maximum offset: 6

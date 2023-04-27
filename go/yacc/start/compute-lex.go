@@ -3,6 +3,7 @@ package compute
 import (
 	"bytes"
 	"fmt"
+	"unicode"
 )
 
 type Compute struct {
@@ -18,10 +19,17 @@ func (c *Lex) Lex(lval *yySymType) int {
 	b, err := c.Input.ReadByte()
 	if err == nil {
 		lval.ele = string(b)
-		fmt.Println("-----", lval.ele, lval.str)
-		return NUM
+		if unicode.IsNumber(rune(b)) {
+			return NUM
+		}
+		if unicode.IsSpace(rune(b)) {
+			return SPACE
+		}
+		if bytes.IndexByte([]byte("+-*/%"), b) > -1 {
+			return OPT
+		}
+		return 0
 	}
-	fmt.Println("errrr", err, b)
 	return 0
 }
 

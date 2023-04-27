@@ -114,20 +114,20 @@ func quick() []int {
 	return list
 }
 
-func bigRoot(arr *[]int) {
-	length := len(*arr)
+func bigRoot(arr []int) {
+	length := len(arr)
 	parent := int(math.Ceil(float64(length / 2)))
 	for i := parent; i > 0; i-- {
 		reBigRoot(arr, i-1, length - 1)
 	}
 }
 
-func reBigRoot(arr *[]int, start int, end int) {
+func reBigRoot(arr []int, start int, end int) {
 	// 第二次开始构造只需要从上往下构造即可
 	// 只需要跟两个子节点其中之一来交换
 	// 父节点的个数
 	// parent := int(math.Ceil(float64(length / 2)))
-	list := *arr
+	list := arr
 
 	right := 0
 	left := 0
@@ -158,11 +158,11 @@ func reBigRoot(arr *[]int, start int, end int) {
 func Heap() []int {
 	list := generate()
 	fmt.Printf("堆排%v\n", list)
-	bigRoot(&list)
+	bigRoot(list)
 	length := len(list)
 	for i := length - 1; i > 0; i-- {
 		list[0], list[i] = list[i], list[0]
-		reBigRoot(&list,0, i-1)
+		reBigRoot(list,0, i-1)
 	}
 	fmt.Printf("堆排%v\n", list)
 	return list

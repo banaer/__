@@ -7,15 +7,14 @@ import __yyfmt__ "fmt"
 
 //line compute.y:2
 import "fmt"
+import "strconv"
 
 func setResult(l yyLexer, v Compute) {
-	fmt.Println(v)
+	fmt.Println("output", v.output)
 	l.(*Lex).compute = v
-	// l.(*Compute).output = v.output
-	// l.(*Compute).result = result
 }
 
-//line compute.y:12
+//line compute.y:11
 type yySymType struct {
 	yys     int
 	compute Compute
@@ -24,12 +23,16 @@ type yySymType struct {
 }
 
 const NUM = 57346
+const OPT = 57347
+const SPACE = 57348
 
 var yyToknames = [...]string{
 	"$end",
 	"error",
 	"$unk",
 	"NUM",
+	"OPT",
+	"SPACE",
 }
 
 var yyStatenames = [...]string{}
@@ -47,34 +50,38 @@ var yyExca = [...]int8{
 
 const yyPrivate = 57344
 
-const yyLast = 5
+const yyLast = 13
 
 var yyAct = [...]int8{
-	5, 4, 1, 3, 2,
+	5, 3, 11, 8, 7, 7, 9, 5, 10, 1,
+	6, 4, 2,
 }
 
 var yyPact = [...]int16{
-	-3, -1000, -1000, -4, -1000, -1000,
+	3, -1000, -1000, -2, 2, -1000, -4, -1000, -1000, -1000,
+	-1, -1000,
 }
 
 var yyPgo = [...]int8{
-	0, 4, 3, 2,
+	0, 12, 11, 1, 10, 9,
 }
 
 var yyR1 = [...]int8{
-	0, 3, 1, 2, 2,
+	0, 5, 1, 4, 4, 3, 3, 2, 2,
 }
 
 var yyR2 = [...]int8{
-	0, 1, 1, 1, 2,
+	0, 1, 3, 1, 2, 2, 1, 1, 2,
 }
 
 var yyChk = [...]int16{
-	-1000, -3, -1, -2, 4, 4,
+	-1000, -5, -1, -3, -2, 4, -4, 6, 5, 4,
+	-3, 6,
 }
 
 var yyDef = [...]int8{
-	0, -2, 1, 2, 3, 4,
+	0, -2, 1, 0, 6, 7, 0, 5, 3, 8,
+	2, 4,
 }
 
 var yyTok1 = [...]int8{
@@ -82,7 +89,7 @@ var yyTok1 = [...]int8{
 }
 
 var yyTok2 = [...]int8{
-	2, 3, 4,
+	2, 3, 4, 5, 6,
 }
 
 var yyTok3 = [...]int8{
@@ -428,25 +435,64 @@ yydefault:
 
 	case 1:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line compute.y:26
+//line compute.y:25
 		{
 			setResult(yylex, Compute{output: yyDollar[1].str})
 		}
 	case 2:
-		yyDollar = yyS[yypt-1 : yypt+1]
-//line compute.y:31
+		yyDollar = yyS[yypt-3 : yypt+1]
+//line compute.y:30
 		{
-			yyVAL.str = yyDollar[1].ele
+			ret := ""
+			a, _ := strconv.Atoi(yyDollar[1].ele)
+			b, _ := strconv.Atoi(yyDollar[3].ele)
+			switch yyDollar[2].ele {
+			case "+":
+				ret = fmt.Sprint(a + b)
+			case "-":
+				ret = fmt.Sprint(a - b)
+			case "*":
+				ret = fmt.Sprint(a * b)
+			case "/":
+				ret = fmt.Sprint(a / b)
+			case "%":
+				ret = fmt.Sprint(a % b)
+			}
+			yyVAL.str = yyDollar[1].ele + yyDollar[2].ele + yyDollar[3].ele + "=" + ret
 		}
 	case 3:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line compute.y:36
+//line compute.y:50
 		{
 			yyVAL.ele = yyDollar[1].ele
 		}
 	case 4:
 		yyDollar = yyS[yypt-2 : yypt+1]
-//line compute.y:40
+//line compute.y:54
+		{
+			yyVAL.ele = yyDollar[1].ele
+		}
+	case 5:
+		yyDollar = yyS[yypt-2 : yypt+1]
+//line compute.y:59
+		{
+			yyVAL.ele = yyDollar[1].ele
+		}
+	case 6:
+		yyDollar = yyS[yypt-1 : yypt+1]
+//line compute.y:63
+		{
+			yyVAL.ele = yyDollar[1].ele
+		}
+	case 7:
+		yyDollar = yyS[yypt-1 : yypt+1]
+//line compute.y:68
+		{
+			yyVAL.ele = yyDollar[1].ele
+		}
+	case 8:
+		yyDollar = yyS[yypt-2 : yypt+1]
+//line compute.y:72
 		{
 			yyVAL.ele = yyDollar[1].ele + yyDollar[2].ele
 		}
