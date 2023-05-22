@@ -1,7 +1,7 @@
-FROM ubuntu:latest
+FROM nginx
 
 EXPOSE 8080
 
-COPY start.sh start.sh
+COPY default.conf /etc/nginx/conf.d/default.conf
 
-CMD ["/bin/bash","start.sh"]
+CMD ["nginx", "-g", "daemon off;"]
